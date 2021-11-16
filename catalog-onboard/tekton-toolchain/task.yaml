@@ -1,0 +1,36 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: catalog-onboard
+spec:
+  params:
+    - name: ibmcloud-catalog-api-key
+    - name: tgz-url
+    - name: offering-id
+    - name: catalog-id
+    - name: version
+    - name: terraform-min-version
+    - name: validation-values
+    - name: validation-resource-group
+  steps:
+    - name: onboard-release
+      image: "registry.hub.docker.com/jonibm/ex:stable"
+      script: |
+        #!/usr/bin/env bash
+
+        source ~/.bashrc
+        source ~/.profile
+
+        export CATALOG_APIKEY=$(params.ibmcloud-catalog-api-key)
+        export TGZ_URL=$(params.tgz-url)
+        export OFFERING_ID=$(params.offering-id)
+        export CATALOG_ID=$(params.catalog-id)
+        export VERSION=$(params.version)
+        export TERRAFORM_MIN_VERSION=$(params.terraform-min-version)
+        export VALIDATION_VALUES=$(params.validation-values)
+        export CATALOG_VALIDATION_RG=$(params.validation-resource-group)
+
+        git clone -b master git@github.ibm.com:GoldenEye/operations.git
+        cp operations/catalog-onboard/scripts/catalog-onboard.sh .
+        chmod +x catalog-onboard.sh
+        ./catalog-onboard.sh "$TGZ_URL" "$VERSION" "$CATALOG_ID" "$OFFERING_ID"

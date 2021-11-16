@@ -1,0 +1,48 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: template
+spec:
+  params:
+    - name: ibmcloud-catalog-api-key
+      description: ibm cloud api key
+    - name: tgz-url
+      description: url to the tgz of the release you'd like to onboard
+    - name: offering-id
+      description: ID of the offering you'd like to onboard the new version into
+    - name: catalog-id
+      description: id of the catalog the offering is in
+    - name: version
+      description: semantic version of the offering you're releasing
+    - name: terraform-min-version
+      description: minimum version of terraform to be used with this release
+    - name: validation-values
+      description: inputs to use to validate the release in schematics
+    - name: validation-resource-group
+      description: resource group in which schematics workspaces used to validate will be created
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        name: pipelinerun-$(uid)
+      spec:
+        pipelineRef:
+          name: pipeline
+        params:
+            - name: ibmcloud-catalog-api-key
+              value: $(params.ibmcloud-catalog-api-key)
+            - name: tgz-url
+              value: $(params.tgz-url)
+            - name: offering-id
+              value: $(params.offering-id)
+            - name: catalog-id
+              value: $(params.catalog-id)
+            - name: version
+              value: $(params.version)
+            - name: terraform-min-version
+              value: $(params.terraform-min-version)
+            - name: validation-values
+              value: $(params.validation-values)
+            - name: validation-resource-group
+              value: $(params.validation-resource-group)
