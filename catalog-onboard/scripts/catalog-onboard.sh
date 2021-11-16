@@ -15,6 +15,8 @@ version="$2"
 catalog="$3"
 offering="$4"
 
+echo "$VALIDATION_VALUES"
+
 versionExists=$(ibmcloud catalog offering get -c "$catalog" -o "$offering" --output json | jq -r --arg version "$version" '.kinds[] | any(.versions[].version; . == $version)')
 if [ "$versionExists" == false ]
 then
