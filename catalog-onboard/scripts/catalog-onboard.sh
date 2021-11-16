@@ -46,8 +46,9 @@ echo "get updated version"
 ibmcloud catalog offering get -c "$catalog" -o "$offering" --output json > offering.json
 
 echo "generate validation override values"
+jq --arg version "$version" '[.kinds[] | select(.format_kind=="terraform").versions[] | select(.version==$version).configuration[] | {key: .key, value: .default_value}] | from_entries' <offering.json > defaultValues.json
 jq -n --slurpfile default defaultValues.json --slurpfile input catalogValidationValues.json  '$default[0] + $input[0]' > validationValues.json
-jq -n --slurpfile default defaultValues.json --argjson input "$VALIDATION_VALUES"  '$default[0] + $input' > validationValues.json
+
 
 versionLocator=$(jq -r --arg version "$version" '.kinds[] | select(.format_kind=="terraform").versions[] | select(.version==$version).version_locator' < offering.json)
 echo "version locator: $versionLocator"
