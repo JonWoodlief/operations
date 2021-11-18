@@ -2,7 +2,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: EventListener
 metadata:
-  name: listener
+  name: webhook-listener
 spec:
   triggers:
     - binding:
