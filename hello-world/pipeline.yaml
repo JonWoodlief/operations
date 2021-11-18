@@ -1,0 +1,20 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: pipeline
+spec:
+  params:
+    - name: param1
+      description: demo parameter
+    - name: param2
+      description: demo parameter
+  tasks:
+    - name: catalog-onboard
+      taskRef:
+        name: catalog-onboard
+      params:
+        - name: param1
+          value: $(params.param1)
+        - name: param2
+          value: $(params.param2)

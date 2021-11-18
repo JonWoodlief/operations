@@ -1,0 +1,24 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: template
+spec:
+  params:
+    - name: param1
+      description: demo parameter
+    - name: param2
+      description: demo parameter
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        name: pipelinerun-$(uid)
+      spec:
+        pipelineRef:
+          name: pipeline
+        params:
+            - name: param1
+              value: $(params.param1)
+            - name: param2
+              value: $(params.param2)

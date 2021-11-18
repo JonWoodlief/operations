@@ -1,0 +1,22 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: catalog-onboard
+spec:
+  params:
+    - name: param1
+    - name: param2
+  steps:
+    - name: onboard-release
+      image: "registry.hub.docker.com/jonibm/ex:stable"
+      script: |
+        #!/usr/bin/env bash
+
+        source ~/.bashrc
+        source ~/.profile
+
+        export PARAM1=$(params.ibmcloud-catalog-api-key)
+        export PARAM2=$(params.tgz-url)
+
+        echo "$PARAM1"
+        echo "$PARAM2"
