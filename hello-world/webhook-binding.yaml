@@ -5,4 +5,4 @@ metadata:
   name: webhook-binding
 params:
 - name: param1
-value: $(event.param1)
+  value: $(event.param1)
