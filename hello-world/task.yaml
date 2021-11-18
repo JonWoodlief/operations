@@ -15,8 +15,8 @@ spec:
         source ~/.bashrc
         source ~/.profile
 
-        export PARAM1=$(params.ibmcloud-catalog-api-key)
-        export PARAM2=$(params.tgz-url)
+        export PARAM1=$(params.param1)
+        export PARAM2=$(params.param2)
 
         echo "$PARAM1"
         echo "$PARAM2"
