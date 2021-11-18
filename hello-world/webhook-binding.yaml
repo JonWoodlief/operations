@@ -6,6 +6,6 @@ metadata:
 spec:
   params:
     - name: param1
-    value: $(event.param1)
+      value: $(event.param1)
     - name: param2
-    value: $(event.param2)
+      value: $(event.param2)
